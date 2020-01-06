@@ -1,14 +1,14 @@
 [
     {
         "id": 1,
-        "name": "Department 1"
+        "name": "Accounts"
     },
     {
         "id": 2,
-        "name": "Department 2"
+        "name": "Customer"
     },
     {
         "id": 3,
-        "name": "Department 3"
+        "name": "Operations"
     }
 ]
