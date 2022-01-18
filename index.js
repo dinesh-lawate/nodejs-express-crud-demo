@@ -1,4 +1,6 @@
 const express = require("express");
+const jwt = require('express-jwt');
+var jwks = require('jwks-rsa');
 const morgan = require("morgan");
 const helmet = require('helmet');
 const config = require("config");
@@ -41,6 +43,20 @@ app.use(cors({
     allowedHeaders: "*"
 }));
 
+var jwtCheck = jwt({
+    secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: 'https://dev-cod0w274.auth0.com/.well-known/jwks.json'
+    }),
+    audience: 'https://nodejs.auth0.api',
+    issuer: 'https://dev-cod0w274.auth0.com/',
+    algorithms: ['RS256']
+});
+
+app.use(jwtCheck);
+
 //Using config package
 const dbConfig = config.get('Customer.dbConfig');
 debug(dbConfig);
@@ -49,6 +65,7 @@ app.use("/api/courses", courses);
 app.use("/api/posts", posts);
 app.use("/api/people", people);
 app.use("/api/employees", employee);
+// app.use("/api/employees", employee);
 app.use("/api/departments", department);
 app.use("/", home);
 
